@@ -27,21 +27,8 @@ Reference for OpenGL commands: https://www.opengl.org/sdk/docs/man2/xhtml/
 double tc = -1.5;
 
 int Populacao; // Total de Objetos
-int obji;       //indec Obj sendo desenhado;
+int obji;       //indice do Obj sendo desenhado na Funcao MyDisplay();
 GLfloat mouse_x, mouse_y;
-
-// Extrinsic matrix
-//GLfloat r[9] = { 1, 0, 0, 0, 1, 0, 0, 0, 1 };
-//GLfloat t[3] = { 0, 0, -1.5 };
-
-// Extrinsic matrix
-//GLfloat extrinsic[16] =
-//{
-//    1, 0, 0, 0,
-//    0, 1, 0, 0,
-//    0, 0, -1, 0,
-//    -0.5, 0, tc, 1
-//};
 
 // Extrinsic matrix
 GLfloat r[9] = { 1, 0, 0, 0, 1, 0, 0, 0, 1 };
@@ -70,7 +57,7 @@ GLfloat wHeight = 720.0;
 // Constants for object translation and rotation and camera translation
 const double translateConstant = 0.03;
 const double rotateConst = 1.5;
-const double translateCameraConst = 0.005;
+const double translateCameraConst = 0.05;
 
 OBJETO **obj;
 
@@ -95,7 +82,7 @@ void myreshape(GLsizei w, GLsizei h) // Called at startup and when you move the 
     glLoadIdentity();
     gluPerspective(45, g_Width / g_Height, 0.1f, 3000.0f);
 }
-
+//iluminação
 GLfloat difusa[3] = { 0.5, 0.1, 0.1 };
 GLfloat ambiente[3] = { 1, 0.4, 1 };
 GLfloat especular[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
@@ -122,26 +109,18 @@ void drawGrid() // Draws a grid...
     for (int i = 0; i <= 10; i++)
     {
         if (i == 0)
-        {
             glColor3f(.6, .3, .3);
-        }
         else
-        {
             glColor3f(.25, .25, .25);
-        };
         glVertex3f(i, 0, 0);
         glVertex3f(i, 0, 10);
         if (i == 0)
-        {
             glColor3f(.3, .3, .6);
-        }
         else
-        {
             glColor3f(.25, .25, .25);
-        };
         glVertex3f(0, 0, i);
         glVertex3f(10, 0, i);
-    };
+    }
     glEnd();
 
     glPopMatrix();
@@ -149,19 +128,17 @@ void drawGrid() // Draws a grid...
 
 void mydisplay()
 {
-    //cout << "Don't remove me, I am running." << endl;
-
     glMatrixMode(GL_MODELVIEW);
-//
+
     glClearColor(0, 0, 0, 0);
-//
+
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 
 // Update camera translation on z axis (altered by keyboard input)
     extrinsic[14] = (double) t[2];
     extrinsic[13] = (double) t[1];
     extrinsic[12] = (double) t[0];
-//
+
     glMatrixMode(GL_MODELVIEW);
 
     glLoadMatrixf(extrinsic);
@@ -177,9 +154,8 @@ void mydisplay()
         float *verts = ob->vertices;
         int trp;
         glPushMatrix();
-        //if (obji){
         glRotatef(ro, 1, 1, 1);
-        glTranslatef(to, 0, 0);//}
+        glTranslatef(to, 0, 0);
 
         glBegin(GL_TRIANGLES);//start drawing triangles
 
@@ -201,16 +177,6 @@ void mydisplay()
         glEnd();//end drawing of triangles
         glPopMatrix();
     }
-
-	glColor3f(0.5, 0.5, 0.5);
-
-	glPushMatrix();
-
-		glTranslatef(to + 0.8, 0, 0);
-		glRotatef(ro, 1, 1, 1);
-		glutWireTeapot(0.3);
-
-	glPopMatrix();
 
     glFlush();
 
@@ -375,17 +341,11 @@ void rotate(double r)
 
 void handleMotion(int x, int y)
 {
-
     cameraRotateY((GLfloat)mouse_x*0.007);
     cameraRotateX((GLfloat)mouse_y*0.007);
     mouse_x = (float)x;
     mouse_y = (float)y;
 }
-
-void handleMouse(int btn, int state, int x, int y)
-{
-}
-
 
 int main(int argc, char **argv)
 {
@@ -415,12 +375,11 @@ int main(int argc, char **argv)
     glutCreateWindow("OpenGL");
     glutDisplayFunc(mydisplay);
     glutReshapeFunc(myreshape);
-    glutMouseFunc(handleMouse);
     glutMotionFunc(handleMotion);
     glutKeyboardUpFunc(handleKeyboardUp);
     glutKeyboardFunc(handleKeyboardPressed);
     glutIdleFunc(idleFunction);
-    initLighting();
+    //initLighting();
     initialize();
     glutMainLoop();
     return 0;

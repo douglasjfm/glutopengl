@@ -1,0 +1,13 @@
+## Obj generated with pol2obj file converter
+## Marcelo Walter
+## Original file named out.pol
+
+v -3.675640 1.471510 0.062298
+v -3.601670 1.293050 0.000095
+v -3.675640 1.471510 -0.062104
+v -3.714780 1.473250 0.107766
+v -3.734980 1.589430 0.295300
+f 1 2 3
+f 1 2 4
+f 1 4 5
+f 1 5 2
