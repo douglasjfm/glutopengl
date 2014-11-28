@@ -72,7 +72,29 @@ void lerFloats(char *linha, OBJETO *o)
         inserelf(o->vn, z);
     }
 }
-
+void listaparavetor (OBJETO *o)
+{
+    lfloat *h;
+    float *vtx;
+    int c=0;
+    h = o->v;
+    h = o->v;
+    while (h)
+    {
+        c++;
+        h = h->px;
+    }
+    vtx = (float*) calloc(c,sizeof(float));
+    c=0;
+    h = o->v;
+    while(h)
+    {
+        vtx[c] = h->f;
+        h = h->px;
+        c++;
+    }
+    o->vertices = vtx;
+}
 OBJETO* loader(char* fname)
 {
     FILE * file = fopen(fname, "rb");
@@ -113,7 +135,7 @@ OBJETO* loader(char* fname)
             (linha[0] == 'v' && linha[1] == ' ')
         ) lerFloats(linha, obj);
     }
-
+    listaparavetor(obj);
     return obj;
 }
 
