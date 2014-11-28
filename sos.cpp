@@ -18,12 +18,19 @@ Reference for OpenGL commands: https://www.opengl.org/sdk/docs/man2/xhtml/
 *****************************************************/
 
 #include "sos.h"
+#include <math.h>
 
 // ##### Params START #####
 
 // Extrinsic matrix translation params (camera translation)
 // Note: only set for the z axis
 double tc = -1.5;
+
+GLfloat mouse_x, mouse_y;
+
+// Extrinsic matrix
+GLfloat r[9] = { 1, 0, 0, 0, 1, 0, 0, 0, 1 };
+GLfloat t[3] = { 0, 0, -1.5 };
 
 // Extrinsic matrix
 GLfloat extrinsic[16] =
@@ -231,6 +238,62 @@ void cameraTranslate(double t)
 {
 	tc += t; // Translate camera on z axis
 }
+void mouseMovement(int x, int y)
+{
+
+}
+
+void cameraTranslateZ(double tr)
+{
+	t[2] += (GLfloat)tr; // Translate camera on z axis
+}
+void cameraTranslateX(double tr)
+{
+	t[0] += (GLfloat)tr; // Translate camera on x axis
+}
+void cameraRotateX(GLfloat tr)
+{
+	extrinsic[0] = (double)1;
+	extrinsic[5] = (double)cos(r[4]+tr);
+	extrinsic[6] = (double)-sin(r[5]+tr);
+	extrinsic[9] = (double)sin(r[7]+tr);
+	extrinsic[10] = (double)cos(r[8]+tr);
+	extrinsic[15] = (double)1;
+	glMatrixMode(GL_MODELVIEW);
+
+	glLoadMatrixf(extrinsic);
+
+}
+void cameraRotateY(GLfloat tr)
+{
+	extrinsic[0] = (double)cos(r[0]+tr);
+	extrinsic[2] = (double)sin(r[2]+tr);
+	extrinsic[5] = (double)1;
+	extrinsic[8] = (double)-sin(r[6]+tr);
+	extrinsic[10] = (double)cos(r[8]+tr);
+	extrinsic[15] = (double)1;
+	glMatrixMode(GL_MODELVIEW);
+
+	glLoadMatrixf(extrinsic);
+}
+void handleMotion(int x, int y)
+{
+	if ((float)x > mouse_x)
+		cameraRotateY((GLfloat)(-mouse_x)*0.01);
+	else
+		cameraRotateY((GLfloat)mouse_x*0.01);
+	if ((float)y > mouse_y)
+		cameraRotateX((GLfloat)mouse_y*0.01);
+	else
+		cameraRotateX((GLfloat)(-mouse_y)*0.01);
+	mouse_x = (float)x;
+	mouse_y = (float)y;
+}
+
+void handleMouse(int btn, int state, int x, int y)
+{
+}
+
 
 int main(int argc, char **argv)
 {
@@ -250,6 +313,8 @@ int main(int argc, char **argv)
 	glutCreateWindow("OpenGL");
 	glutDisplayFunc(mydisplay);
 	glutReshapeFunc(myreshape);
+	glutMouseFunc(handleMouse);
+	glutPassiveMotionFunc(handleMotion);
 	glutKeyboardUpFunc(handleKeyboardUp);
 	glutKeyboardFunc(handleKeyboardPressed);
 	glutIdleFunc(idleFunction);
