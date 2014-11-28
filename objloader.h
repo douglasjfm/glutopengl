@@ -11,22 +11,23 @@ using namespace std;
 
 typedef struct lfloat
 {
-	float f;
-	struct lfloat *px;
-}lfloat;
+    float f;
+    struct lfloat *px;
+} lfloat;
 
 typedef struct lint
 {
-	int i;
-	struct lint *px;
-}lint;
+    int i;
+    struct lint *px;
+} lint;
 
 
-typedef struct OBJETO{
-	lfloat *v;
-	lfloat *vt;
-	lfloat *vn;
-	lint *f;
+typedef struct OBJETO
+{
+    lfloat *v;
+    lfloat *vt;
+    lfloat *vn;
+    lint *f;
 } OBJETO;
 
 lint* insereli(lint *head, int x);

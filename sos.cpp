@@ -35,10 +35,10 @@ GLfloat t[3] = { 0, 0, -1.5 };
 // Extrinsic matrix
 GLfloat extrinsic[16] =
 {
-	1, 0, 0, 0,
-	0, 1, 0, 0,
-	0, 0, -1, 0,
-	-0.5, 0, tc, 1
+    1, 0, 0, 0,
+    0, 1, 0, 0,
+    0, 0, -1, 0,
+    -0.5, 0, tc, 1
 };
 
 // Object rotation param for all axis
@@ -64,80 +64,92 @@ bool buffer[250];
 
 void initialize() // Initialize opengl params
 {
-	glClearColor(0.0f, 0.0f, 0.0f, 0.5f);
-	glClearDepth(1.0f);
-	glEnable(GL_DEPTH_TEST);
-	glDepthFunc(GL_LEQUAL);
-	glShadeModel(GL_SMOOTH);
-	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+    glClearColor(0.0f, 0.0f, 0.0f, 0.5f);
+    glClearDepth(1.0f);
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LEQUAL);
+    glShadeModel(GL_SMOOTH);
+    glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 }
 
 void myreshape(GLsizei w, GLsizei h) // Called at startup and when you move the window
 {
-	glMatrixMode(GL_PROJECTION);
-	double g_Width = wWidth;
-	double g_Height = wHeight;
-	glViewport(0, 0, g_Width, g_Height);
-	glLoadIdentity();
-	gluPerspective(45, g_Width / g_Height, 0.1f, 3000.0f);
+    glMatrixMode(GL_PROJECTION);
+    double g_Width = wWidth;
+    double g_Height = wHeight;
+    glViewport(0, 0, g_Width, g_Height);
+    glLoadIdentity();
+    gluPerspective(45, g_Width / g_Height, 0.1f, 3000.0f);
 }
 
 void drawGrid() // Draws a grid...
 {
-	glPushMatrix();
+    glPushMatrix();
 
-		glTranslatef(-5, -.1, -5);
+    glTranslatef(-5, -.1, -5);
 
-		glColor3f(.3, .3, .3);
+    glColor3f(.3, .3, .3);
 
-		glBegin(GL_LINES);
-			for (int i = 0; i <= 10; i++)
-			{
-				if (i == 0) { glColor3f(.6, .3, .3); }
-				else { glColor3f(.25, .25, .25); };
-				glVertex3f(i, 0, 0);
-				glVertex3f(i, 0, 10);
-				if (i == 0) { glColor3f(.3, .3, .6); }
-				else { glColor3f(.25, .25, .25); };
-				glVertex3f(0, 0, i);
-				glVertex3f(10, 0, i);
-			};
-		glEnd();
+    glBegin(GL_LINES);
+    for (int i = 0; i <= 10; i++)
+    {
+        if (i == 0)
+        {
+            glColor3f(.6, .3, .3);
+        }
+        else
+        {
+            glColor3f(.25, .25, .25);
+        };
+        glVertex3f(i, 0, 0);
+        glVertex3f(i, 0, 10);
+        if (i == 0)
+        {
+            glColor3f(.3, .3, .6);
+        }
+        else
+        {
+            glColor3f(.25, .25, .25);
+        };
+        glVertex3f(0, 0, i);
+        glVertex3f(10, 0, i);
+    };
+    glEnd();
 
-	glPopMatrix();
+    glPopMatrix();
 }
 
 void mydisplay()
 {
-	//cout << "Don't remove me, I am running." << endl;
+    //cout << "Don't remove me, I am running." << endl;
 
-	glMatrixMode(GL_MODELVIEW);
+    glMatrixMode(GL_MODELVIEW);
 //
-	glClearColor(0, 0, 0, 0);
+    glClearColor(0, 0, 0, 0);
 //
-	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 //
 //	// Update camera translation on z axis (altered by keyboard input)
-	extrinsic[14] = tc;
+    extrinsic[14] = tc;
 //
-	glMatrixMode(GL_MODELVIEW);
+    glMatrixMode(GL_MODELVIEW);
 //
-	glLoadMatrixf(extrinsic);
+    glLoadMatrixf(extrinsic);
 //
-	glRotatef(ro * 0.2, 0, 1, 0); // Comment this line to stop the world from spinning (less dizzy)
+    glRotatef(ro * 0.2, 0, 1, 0); // Comment this line to stop the world from spinning (less dizzy)
 //
-	drawGrid();
+    drawGrid();
 //
 //	glColor3f(0.2, 0.0, 0.2);
 
-	// Test without glPushMatrix() and glPopMatrix() to see what happens
+    // Test without glPushMatrix() and glPopMatrix() to see what happens
     lfloat *draw = obj[0]->v;
     glPushMatrix();
 
-	 glRotatef(ro, 1, 1, 1);
-	 glTranslatef(to, 0, 0);
+    glRotatef(ro, 1, 1, 1);
+    glTranslatef(to, 0, 0);
 
-	glBegin(GL_TRIANGLES);//start drawing triangles
+    glBegin(GL_TRIANGLES);//start drawing triangles
 
     glColor3f(0.2, 0.2, 0.0);
     while (draw)
@@ -146,8 +158,8 @@ void mydisplay()
         draw = draw->px->px->px;
     }
 
-	 glEnd();//end drawing of triangles
-	 glPopMatrix();
+    glEnd();//end drawing of triangles
+    glPopMatrix();
 
 
 //	glPushMatrix();
@@ -178,65 +190,65 @@ void mydisplay()
 //
 //	glPopMatrix();
 
-	glFlush();
+    glFlush();
 
-	glutPostRedisplay();
+    glutPostRedisplay();
 }
 
 void handleKeyboardPressed(unsigned char key, int x, int y)
 {
-	buffer[(int)key] = true;
+    buffer[(int)key] = true;
 }
 
 void handleKeyboardUp(unsigned char key, int x, int y)
 {
-	buffer[(int)key] = false;
+    buffer[(int)key] = false;
 }
 
 void idleFunction() // Processes keyboard inputs
 {
-	// #### Resume ####
+    // #### Resume ####
 
-	// Move object: 1, 2
-	// Rotate object: r
-	// Move camera: w, s
-	// Exit: ESC
+    // Move object: 1, 2
+    // Rotate object: r
+    // Move camera: w, s
+    // Exit: ESC
 
-	// #### Object commands ####
+    // #### Object commands ####
 
-	if(buffer['1']==true) // Translate object on x negatively
-		translate(-translateConstant);
-	if(buffer['2']==true) // Translate object on x positively
-		translate(translateConstant);
-	if(buffer['r']==true)
-		rotate(rotateConst);
+    if(buffer['1']==true) // Translate object on x negatively
+        translate(-translateConstant);
+    if(buffer['2']==true) // Translate object on x positively
+        translate(translateConstant);
+    if(buffer['r']==true)
+        rotate(rotateConst);
 
-	// #### Camera commands ####
+    // #### Camera commands ####
 
-	if(buffer['w']==true) // Move camera frontward
-		cameraTranslate(translateCameraConst);
-	if(buffer['s']==true) // Move camera backward
-		cameraTranslate(-translateCameraConst);
+    if(buffer['w']==true) // Move camera frontward
+        cameraTranslate(translateCameraConst);
+    if(buffer['s']==true) // Move camera backward
+        cameraTranslate(-translateCameraConst);
 
-	// #### Other commands ####
+    // #### Other commands ####
 
-	if(buffer[27] == true) // ESC
-		exit(0);
+    if(buffer[27] == true) // ESC
+        exit(0);
 }
 
 void translate(double t)
 {
-	to += t; // Translate object on x axis
+    to += t; // Translate object on x axis
 }
 
 void rotate(double r)
 {
-	ro += r; // Rotate object in all axis
+    ro += r; // Rotate object in all axis
 }
 
 void cameraTranslate(double t)
 {
-	tc += t; // Translate camera on z axis
+    tc += t; // Translate camera on z axis
 }
 void mouseMovement(int x, int y)
 {
@@ -245,49 +257,49 @@ void mouseMovement(int x, int y)
 
 void cameraTranslateZ(double tr)
 {
-	t[2] += (GLfloat)tr; // Translate camera on z axis
+    t[2] += (GLfloat)tr; // Translate camera on z axis
 }
 void cameraTranslateX(double tr)
 {
-	t[0] += (GLfloat)tr; // Translate camera on x axis
+    t[0] += (GLfloat)tr; // Translate camera on x axis
 }
 void cameraRotateX(GLfloat tr)
 {
-	extrinsic[0] = (double)1;
-	extrinsic[5] = (double)cos(r[4]+tr);
-	extrinsic[6] = (double)-sin(r[5]+tr);
-	extrinsic[9] = (double)sin(r[7]+tr);
-	extrinsic[10] = (double)cos(r[8]+tr);
-	extrinsic[15] = (double)1;
-	glMatrixMode(GL_MODELVIEW);
+    extrinsic[0] = (double)1;
+    extrinsic[5] = (double)cos(r[4]+tr);
+    extrinsic[6] = (double)-sin(r[5]+tr);
+    extrinsic[9] = (double)sin(r[7]+tr);
+    extrinsic[10] = (double)cos(r[8]+tr);
+    extrinsic[15] = (double)1;
+    glMatrixMode(GL_MODELVIEW);
 
-	glLoadMatrixf(extrinsic);
+    glLoadMatrixf(extrinsic);
 
 }
 void cameraRotateY(GLfloat tr)
 {
-	extrinsic[0] = (double)cos(r[0]+tr);
-	extrinsic[2] = (double)sin(r[2]+tr);
-	extrinsic[5] = (double)1;
-	extrinsic[8] = (double)-sin(r[6]+tr);
-	extrinsic[10] = (double)cos(r[8]+tr);
-	extrinsic[15] = (double)1;
-	glMatrixMode(GL_MODELVIEW);
+    extrinsic[0] = (double)cos(r[0]+tr);
+    extrinsic[2] = (double)sin(r[2]+tr);
+    extrinsic[5] = (double)1;
+    extrinsic[8] = (double)-sin(r[6]+tr);
+    extrinsic[10] = (double)cos(r[8]+tr);
+    extrinsic[15] = (double)1;
+    glMatrixMode(GL_MODELVIEW);
 
-	glLoadMatrixf(extrinsic);
+    glLoadMatrixf(extrinsic);
 }
 void handleMotion(int x, int y)
 {
-	if ((float)x > mouse_x)
-		cameraRotateY((GLfloat)(-mouse_x)*0.01);
-	else
-		cameraRotateY((GLfloat)mouse_x*0.01);
-	if ((float)y > mouse_y)
-		cameraRotateX((GLfloat)mouse_y*0.01);
-	else
-		cameraRotateX((GLfloat)(-mouse_y)*0.01);
-	mouse_x = (float)x;
-	mouse_y = (float)y;
+    if ((float)x > mouse_x)
+        cameraRotateY((GLfloat)(-mouse_x)*0.01);
+    else
+        cameraRotateY((GLfloat)mouse_x*0.01);
+    if ((float)y > mouse_y)
+        cameraRotateX((GLfloat)mouse_y*0.01);
+    else
+        cameraRotateX((GLfloat)(-mouse_y)*0.01);
+    mouse_x = (float)x;
+    mouse_y = (float)y;
 }
 
 void handleMouse(int btn, int state, int x, int y)
@@ -301,24 +313,24 @@ int main(int argc, char **argv)
     if (!argc)exit (2);
     obj = (OBJETO**) calloc(argc-1,sizeof(OBJETO*));
 
-    for (c=1;c<argc;c++)
+    for (c=1; c<argc; c++)
     {
         obj[c-1] = loader(argv[c]);
     }
 
-	glutInit(&argc, argv);
-	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
-	glutInitWindowSize(1280, 720);
-	glutInitWindowPosition(0,0);
-	glutCreateWindow("OpenGL");
-	glutDisplayFunc(mydisplay);
-	glutReshapeFunc(myreshape);
-	glutMouseFunc(handleMouse);
-	glutPassiveMotionFunc(handleMotion);
-	glutKeyboardUpFunc(handleKeyboardUp);
-	glutKeyboardFunc(handleKeyboardPressed);
-	glutIdleFunc(idleFunction);
-	initialize();
-	glutMainLoop();
-	return 0;
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
+    glutInitWindowSize(1280, 720);
+    glutInitWindowPosition(0,0);
+    glutCreateWindow("OpenGL");
+    glutDisplayFunc(mydisplay);
+    glutReshapeFunc(myreshape);
+    glutMouseFunc(handleMouse);
+    glutPassiveMotionFunc(handleMotion);
+    glutKeyboardUpFunc(handleKeyboardUp);
+    glutKeyboardFunc(handleKeyboardPressed);
+    glutIdleFunc(idleFunction);
+    initialize();
+    glutMainLoop();
+    return 0;
 }
