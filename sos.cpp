@@ -29,16 +29,28 @@ double tc = -1.5;
 GLfloat mouse_x, mouse_y;
 
 // Extrinsic matrix
+//GLfloat r[9] = { 1, 0, 0, 0, 1, 0, 0, 0, 1 };
+//GLfloat t[3] = { 0, 0, -1.5 };
+
+// Extrinsic matrix
+//GLfloat extrinsic[16] =
+//{
+//    1, 0, 0, 0,
+//    0, 1, 0, 0,
+//    0, 0, -1, 0,
+//    -0.5, 0, tc, 1
+//};
+
+// Extrinsic matrix
 GLfloat r[9] = { 1, 0, 0, 0, 1, 0, 0, 0, 1 };
 GLfloat t[3] = { 0, 0, -1.5 };
 
-// Extrinsic matrix
 GLfloat extrinsic[16] =
 {
-    1, 0, 0, 0,
-    0, 1, 0, 0,
-    0, 0, -1, 0,
-    -0.5, 0, tc, 1
+	r[0], r[1], r[2], t[0],
+	r[3], r[4], r[5], t[1],
+	r[6], r[7], r[8], t[2],
+	0, 0, 0, 1
 };
 
 // Object rotation param for all axis
@@ -128,9 +140,11 @@ void mydisplay()
     glClearColor(0, 0, 0, 0);
 //
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-//
-//	// Update camera translation on z axis (altered by keyboard input)
-    extrinsic[14] = tc;
+
+// Update camera translation on z axis (altered by keyboard input)
+	extrinsic[14] = (double) t[2];
+	extrinsic[13] = (double) t[1];
+	extrinsic[12] = (double) t[0];
 //
     glMatrixMode(GL_MODELVIEW);
 //
@@ -194,62 +208,6 @@ void mydisplay()
 
     glutPostRedisplay();
 }
-
-void handleKeyboardPressed(unsigned char key, int x, int y)
-{
-    buffer[(int)key] = true;
-}
-
-void handleKeyboardUp(unsigned char key, int x, int y)
-{
-    buffer[(int)key] = false;
-}
-
-void idleFunction() // Processes keyboard inputs
-{
-    // #### Resume ####
-
-    // Move object: 1, 2
-    // Rotate object: r
-    // Move camera: w, s
-    // Exit: ESC
-
-    // #### Object commands ####
-
-    if(buffer['1']==true) // Translate object on x negatively
-        translate(-translateConstant);
-    if(buffer['2']==true) // Translate object on x positively
-        translate(translateConstant);
-    if(buffer['r']==true)
-        rotate(rotateConst);
-
-    // #### Camera commands ####
-
-    if(buffer['w']==true) // Move camera frontward
-        cameraTranslate(translateCameraConst);
-    if(buffer['s']==true) // Move camera backward
-        cameraTranslate(-translateCameraConst);
-
-    // #### Other commands ####
-
-    if(buffer[27] == true) // ESC
-        exit(0);
-}
-
-void translate(double t)
-{
-    to += t; // Translate object on x axis
-}
-
-void rotate(double r)
-{
-    ro += r; // Rotate object in all axis
-}
-
-void cameraTranslate(double t)
-{
-    tc += t; // Translate camera on z axis
-}
 void mouseMovement(int x, int y)
 {
 
@@ -288,16 +246,71 @@ void cameraRotateY(GLfloat tr)
 
     glLoadMatrixf(extrinsic);
 }
+void handleKeyboardPressed(unsigned char key, int x, int y)
+{
+    buffer[(int)key] = true;
+}
+
+void handleKeyboardUp(unsigned char key, int x, int y)
+{
+    buffer[(int)key] = false;
+}
+
+void idleFunction() // Processes keyboard inputs
+{
+    // #### Resume ####
+
+    // Move object: 1, 2
+    // Rotate object: r
+    // Move camera: w, s
+    // Exit: ESC
+
+    // #### Object commands ####
+
+    if(buffer['1']==true) // Translate object on x negatively
+        translate(-translateConstant);
+    if(buffer['2']==true) // Translate object on x positively
+        translate(translateConstant);
+    if(buffer['r']==true)
+        rotate(rotateConst);
+
+    // #### Camera commands ####
+
+    if (buffer['w'] == true || buffer['W'] == true) // Move camera frontward
+		cameraTranslateZ(translateCameraConst);
+	else if (buffer['s'] == true || buffer['S'] == true) // Move camera backward
+		cameraTranslateZ(-translateCameraConst);
+	else if (buffer['a'] == true || buffer['A'] == true) // Move camera left
+		cameraTranslateX(translateCameraConst);
+	else if (buffer['d'] == true || buffer['D'] == true) // Move camera right
+		cameraTranslateX(-translateCameraConst);
+
+    // #### Other commands ####
+
+    if(buffer[27] == true) // ESC
+        exit(0);
+}
+
+void translate(double t)
+{
+    to += t; // Translate object on x axis
+}
+
+void rotate(double r)
+{
+    ro += r; // Rotate object in all axis
+}
+
 void handleMotion(int x, int y)
 {
-    if ((float)x > mouse_x)
-        cameraRotateY((GLfloat)(-mouse_x)*0.01);
-    else
-        cameraRotateY((GLfloat)mouse_x*0.01);
-    if ((float)y > mouse_y)
-        cameraRotateX((GLfloat)mouse_y*0.01);
-    else
-        cameraRotateX((GLfloat)(-mouse_y)*0.01);
+   // if ((float)x > mouse_x)
+        cameraRotateY((GLfloat)(mouse_x)*0.007);
+   // else
+   //     cameraRotateY((GLfloat)mouse_x*0.01);
+   // if ((float)y > mouse_y)
+        cameraRotateX((GLfloat)mouse_y*0.007);
+  //  else
+   //     cameraRotateX((GLfloat)(-mouse_y)*0.01);
     mouse_x = (float)x;
     mouse_y = (float)y;
 }
