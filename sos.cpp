@@ -303,14 +303,9 @@ void rotate(double r)
 
 void handleMotion(int x, int y)
 {
-   // if ((float)x > mouse_x)
-        cameraRotateY((GLfloat)(mouse_x)*0.007);
-   // else
-   //     cameraRotateY((GLfloat)mouse_x*0.01);
-   // if ((float)y > mouse_y)
-        cameraRotateX((GLfloat)mouse_y*0.007);
-  //  else
-   //     cameraRotateX((GLfloat)(-mouse_y)*0.01);
+
+    cameraRotateY((GLfloat)mouse_x*0.007);
+    cameraRotateX((GLfloat)mouse_y*0.007);
     mouse_x = (float)x;
     mouse_y = (float)y;
 }
