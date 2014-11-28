@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="exemplo_pg" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/exemplo_pg" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="C:/Users/Rozilda/Documents/cin/pg/Projeto Base PG - OpenGL - VS 2013/Dependencies/bin" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option projectLinkerOptionsRelation="0" />
+				<Option projectIncludeDirsRelation="0" />
+				<Option projectLibDirsRelation="0" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/exemplo_pg" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="C:/Users/Rozilda/Documents/cin/pg/Projeto Base PG - OpenGL - VS 2013/Dependencies/bin" />
+				<Option object_output="obj/Release/" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-g" />
+		</Compiler>
+		<Linker>
+			<Add library="libglut.a" />
+			<Add library="libGLU.a" />
+			<Add library="libGL.a" />
+		</Linker>
+		<Unit filename="sos.cpp" />
+		<Unit filename="sos.h" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
