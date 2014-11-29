@@ -30,6 +30,8 @@ int Populacao; // Total de Objetos
 int obji;       //indice do Obj sendo desenhado na Funcao MyDisplay();
 GLfloat mouse_x, mouse_y;
 
+#define MaxPOP 15 //Maximo de Objetos carregados
+
 // Extrinsic matrix
 GLfloat r[9] = { 1, 0, 0, 0, 1, 0, 0, 0, 1 };
 GLfloat t[3] = { 0, 0, -3.5 };
@@ -277,7 +279,14 @@ void handleKeyboardUp(unsigned char key, int x, int y)
 {
     buffer[(int)key] = false;
 }
-
+void carregaObjeto ()
+{
+    char fnm[100];
+    printf("Entre nome do Obj...: ");
+    scanf("%s",fnm);
+    obj[Populacao] = loader(fnm);
+    Populacao++;
+}
 void idleFunction() // Processes keyboard inputs
 {
     // #### Resume ####
@@ -322,6 +331,8 @@ void idleFunction() // Processes keyboard inputs
 		cameraTranslateX(translateCameraConst);
 	else if (buffer['d'] == true || buffer['D'] == true) // Move camera right
 		cameraTranslateX(-translateCameraConst);
+    else if (buffer['o'] == true && Populacao < MaxPOP)
+        carregaObjeto();
     // #### Other commands ####
 
     if(buffer[27] == true) // ESC
@@ -355,22 +366,19 @@ void handleMotion(int x, int y)
 int main(int argc, char **argv)
 {
     int c = 1;
-    if (!argc)exit (2);
 
-    obj = (OBJETO**) calloc(argc,sizeof(OBJETO*));
+    obj = (OBJETO**) calloc(MaxPOP,sizeof(OBJETO*));
 
     if (argc == 1)
     {
-        obj[0] = loader("Dog.obj");
+        obj[0] = loader((char*) "Dog.obj");
         Populacao = 1;
     }
     else
     {
-        Populacao = argc - 1;
-        for (c=1; c<argc; c++)
-        {
+        for (c=1; c<argc && c <= (MaxPOP); c++)
             obj[c-1] = loader(argv[c]);
-        }
+        Populacao = argc - 1;
     }
 
     glutInit(&argc, argv);
@@ -387,5 +395,7 @@ int main(int argc, char **argv)
     initLighting();
     initialize();
     glutMainLoop();
+    for(c=0;c<Populacao;c++) destruaObjeto(obj[c]);
+    free(obj);
     return 0;
 }

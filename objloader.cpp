@@ -138,4 +138,40 @@ OBJETO* loader(char* fname)
     listaparavetor(obj);
     return obj;
 }
+void destruaLInt (lint * h)
+{
+    lint *t;
+    if (!h) return;
+    t = h->px;
+    while(t)
+    {
+        free(h);
+        h = t;
+        t = h->px;
+    }
+    free(h);
+}
+void destruaLFloat (lfloat * h)
+{
+    lfloat *t;
+    if (!h) return;
+    t = h->px;
+    while(t)
+    {
+        free(h);
+        h = t;
+        t = h->px;
+    }
+    free(h);
+}
 
+void destruaObjeto (OBJETO *o)
+{
+    if (!o) return;
+    if(o->vertices) free(o->vertices);
+    destruaLInt( o->f);
+    destruaLFloat( o->v);
+    destruaLFloat( o->v);
+    destruaLFloat( o->v);
+
+}

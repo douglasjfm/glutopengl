@@ -28,6 +28,7 @@ typedef struct OBJETO
     lfloat *vt;
     lfloat *vn;
     lint *f;
+    float *vertices;
 } OBJETO;
 
 lint* insereli(lint *head, int x);
@@ -35,5 +36,6 @@ lfloat* inserelf(lfloat *head, float x);
 void lerFace(char *linha, OBJETO *o);
 void lerFloats(char *linha, OBJETO *o);
 OBJETO* loader(char* fname);
+void destruaObjeto (OBJETO *o);
 
 #endif // OBJLOADER_H_INCLUDED
