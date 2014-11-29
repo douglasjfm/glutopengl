@@ -92,9 +92,10 @@ void initLighting ()
     glClearDepth(0.5);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, difusa);
-	glLightfv(GL_LIGHT1, GL_AMBIENT, ambiente);
-	glLightfv(GL_LIGHT2, GL_SPECULAR, especular);
+	glLightfv(GL_LIGHT0, GL_AMBIENT, ambiente);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, especular);
 }
 
 void drawGrid() // Draws a grid...
@@ -143,7 +144,7 @@ void mydisplay()
 
     glLoadMatrixf(extrinsic);
 
-    glRotatef(ro * 0.2, 0, 1, 0); // Comment this line to stop the world from spinning (less dizzy)
+    //glRotatef(ro * 0.2, 0, 1, 0); // Comment this line to stop the world from spinning (less dizzy)
 
     drawGrid();
 
@@ -152,10 +153,14 @@ void mydisplay()
         OBJETO *ob = obj[obji];
         lint *draw = ob->f;
         float *verts = ob->vertices;
-        int trp;
+        int trp = 1;
         glPushMatrix();
         glRotatef(ro, 1, 1, 1);
         glTranslatef(to, 0, 0);
+
+
+//        glColorMaterial(GL_FRONT, GL_DIFFUSE);
+//        glEnable(GL_COLOR_MATERIAL);
 
         glBegin(GL_TRIANGLES);//start drawing triangles
 
@@ -163,13 +168,13 @@ void mydisplay()
         while (draw)
         {
             trp = draw->i;
-            trp--;
+            --trp *= 3;
             glVertex3f(verts[trp],verts[trp+1],verts[trp+2]);
             trp = draw->px->i;
-            trp--;
+            --trp *= 3;
             glVertex3f(verts[trp],verts[trp+1],verts[trp+2]);
             trp = draw->px->px->i;
-            trp--;
+            --trp *= 3;
             glVertex3f(verts[trp],verts[trp+1],verts[trp+2]);
             draw = draw->px->px->px;
         }
@@ -356,7 +361,7 @@ int main(int argc, char **argv)
 
     if (argc == 1)
     {
-        obj[0] = loader("gato.obj");
+        obj[0] = loader("Dog.obj");
         Populacao = 1;
     }
     else
@@ -379,7 +384,7 @@ int main(int argc, char **argv)
     glutKeyboardUpFunc(handleKeyboardUp);
     glutKeyboardFunc(handleKeyboardPressed);
     glutIdleFunc(idleFunction);
-    //initLighting();
+    initLighting();
     initialize();
     glutMainLoop();
     return 0;
